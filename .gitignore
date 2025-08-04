@@ -1,1 +1,34 @@
+# ───── Core ───────────────────────────────────────────────
+# Never commit dependencies
 node_modules/
+
+# Package manager debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ───── Runtime / build output ─────────────────────────────
+dist/
+build/
+coverage/           # nyc / jest / vitest output
+logs/
+*.log
+
+# ───── Environment & secrets ──────────────────────────────
+.env*
+!.env.example        # keep a template for teammates
+
+# ───── Editor cruft ───────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.njsproj
+*.sln
+
+# ───── OS-specific junk ───────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ───── Misc ───────────────────────────────────────────────
+*.local
