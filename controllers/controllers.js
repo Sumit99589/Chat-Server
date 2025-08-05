@@ -1,6 +1,9 @@
-rooms = []
+rooms = {}
 
-function createRoom(req, res){
+const bcrypt = require('bcrypt');
+const { v4: uuidv4 } = require('uuid');
+
+async function createRoom(req, res){
     const {name, isPrivate, password} = req.body;
 
     const roomId = uuidv4();
@@ -14,7 +17,7 @@ function createRoom(req, res){
 
     if (isPrivate){
         if (password != null){
-        const hash = bcrypt.hash(password, 10);
+        const hash =await bcrypt.hash(password, 10);
         room.password = hash
     }else {
         res.status(400).json({error: "Password required."})
@@ -34,17 +37,19 @@ function createRoom(req, res){
 }
 
 function getRoomById(id){
-    for (const room of rooms){
-        if(room[id] == id){
-            return room
-        }
-    }
-    return "No such room exists."
+    return rooms[id] || null;
 }
 
-async function joinRoom(req, res){
-    const {id} = req.params.id
-    const room = getRoomById(id)
-    console.log(room)
-    res.json()
+function joinRoom(req, res) {
+    const { id } = req.params;
+    const room = getRoomById(id);
+
+    if (!room) {
+        return res.status(404).json({ error: 'Room not found' });
+    }
+
+    res.json({ room });
 }
+
+
+module.exports = { createRoom, joinRoom };
