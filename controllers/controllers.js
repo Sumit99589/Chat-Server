@@ -11,6 +11,13 @@ const { v4: uuidv4 } = require('uuid');
 async function createRoom(req, res){
     const {name, isPrivate, password} = req.body;
 
+    for (const roomName of rooms.keys()) {
+        if (roomName === name) {
+          return res.status(409).json({ error: "Room already exists." });
+        }
+    }
+
+
     const roomId = uuidv4();
 
     const room = {
@@ -45,8 +52,8 @@ function getRoom(req, res) {
     if (!room) {
         return res.status(404).json({ error: "Room not found" });
     }
-
-    res.json(room);
+    console.log("room joined.")
+    res.json(room); 
 }
 
 

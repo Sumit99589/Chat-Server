@@ -33,11 +33,11 @@ io.on("connection",(socket)=>{
     })
 })
 
-// const controlRooms = require("./routes/rooms");
+
 const controlRooms = require("./controllers/controllers")
 
 app.use("/rooms", controlRooms)
-// app.use("/rooms", getRoom.router)
+
 
 
 app.get("/", (req,res)=>{
