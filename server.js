@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const cors = require('cors');
 
+
 const app = express();
 const server = http.createServer(app);
 
@@ -32,9 +33,11 @@ io.on("connection",(socket)=>{
     })
 })
 
-const controlRooms = require("./routes/rooms");
+// const controlRooms = require("./routes/rooms");
+const controlRooms = require("./controllers/controllers")
 
 app.use("/rooms", controlRooms)
+// app.use("/rooms", getRoom.router)
 
 
 app.get("/", (req,res)=>{
@@ -44,3 +47,4 @@ app.get("/", (req,res)=>{
 server.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 }); 
+

@@ -1,4 +1,9 @@
-rooms = {}
+const rooms = new Map()
+const express = require('express');
+const router = express.Router()
+
+router.get("/joinRoom/:name", getRoom)
+router.post("/createRoom", createRoom)
 
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
@@ -24,32 +29,25 @@ async function createRoom(req, res){
     }
     }
 
-    rooms[roomId] = room;
+    rooms.set(name,room)
     
     console.log(rooms)
 
     res.status(201).json({
-        id: room.id,
-        name: room.name,
-        isPrivate: room.isPrivate,
-        password: room.password
+        "Value" : rooms.get(name)
   });
 }
 
-function getRoomById(id){
-    return rooms[id] || null;
-}
-
-function joinRoom(req, res) {
-    const { id } = req.params;
-    const room = getRoomById(id);
+function getRoom(req, res) {
+    const { name } = req.params;
+    const room = rooms.get(name);
 
     if (!room) {
-        return res.status(404).json({ error: 'Room not found' });
+        return res.status(404).json({ error: "Room not found" });
     }
 
-    res.json({ room });
+    res.json(room);
 }
 
 
-module.exports = { createRoom, joinRoom };
+module.exports = router;
