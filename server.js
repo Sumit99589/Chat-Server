@@ -23,9 +23,15 @@ app.use(cors());
 io.on("connection",(socket)=>{
     console.log("User connected.");
 
-    socket.on("chat-message", (msg)=>{
+    socket.on("chat-message", ({roomName, msg})=>{
         console.log("received msg "+ msg);
-        io.emit("chat-message", msg);
+        io.to(roomName).emit("chat-message", msg);
+    })
+
+    socket.on("join-room", (room)=>{
+        socket.join(room);
+        socket.emit("joined", room);
+        io.to(room).emit("newUser", socket.id)
     })
 
     socket.on('disconnect',()=>{
